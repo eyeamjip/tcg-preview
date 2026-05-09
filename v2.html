@@ -537,6 +537,9 @@
     margin: auto;
     color: var(--ink);
     overflow: hidden;
+  }
+  .quote-modal:not([open]) { display: none; }
+  .quote-modal[open] {
     display: flex;
     flex-direction: column;
   }
