@@ -133,6 +133,12 @@
     html { font-size: 125%; }
   }
 
+  /* Mobile — was rendering too zoomed-in; pull back a notch */
+  @media (max-width: 1023px) {
+    html { font-size: 87.5%; }       /* 14px base instead of 16px */
+    h1.display { font-size: 22px; }  /* tame the giant page titles on phone */
+  }
+
   /* Keep tap targets large on phone */
   @media (max-width: 640px) {
     .tap { min-height: 44px; }
