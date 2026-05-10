@@ -119,6 +119,68 @@
     .topbar-mobile-menu { display: none; }
   }
 
+  /* ------- SIDEBAR collapse pattern (desktop) ------- */
+  .sidebar {
+    width: 232px;
+    transition: width 220ms cubic-bezier(.4,0,.2,1);
+  }
+  .sidebar.is-collapsed { width: 72px; }
+
+  /* Hide labels / search / badges when collapsed */
+  .sidebar.is-collapsed .sb-hide { display: none !important; }
+
+  /* Compact nav items when collapsed (icon-only, centered) */
+  .sidebar.is-collapsed .nav-item {
+    justify-content: center;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    position: relative;
+  }
+  .sidebar.is-collapsed .nav-item svg { margin: 0; }
+
+  /* Compact section dividers when collapsed (just a hairline) */
+  .sidebar.is-collapsed .nav-section-label {
+    height: 1px; padding: 0; margin: 12px 16px 8px;
+    background: #E2E8E5; overflow: hidden; color: transparent;
+  }
+
+  /* Tooltip on hover when collapsed */
+  .sidebar.is-collapsed .nav-item[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: #052821;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 60;
+    pointer-events: none;
+    box-shadow: 0 8px 20px rgba(8,80,65,.25);
+  }
+
+  /* Collapse toggle button (floating on right edge of sidebar) */
+  .sb-toggle {
+    position: absolute;
+    right: -12px;
+    top: 64px;
+    width: 24px; height: 24px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #E2E8E5;
+    color: #4a5b56;
+    display: grid; place-items: center;
+    box-shadow: 0 2px 8px rgba(8,80,65,.10);
+    z-index: 20;
+    transition: transform 220ms, color .15s, background .15s;
+  }
+  .sb-toggle:hover { color: #0F6E56; background: #F7F9F8; }
+  .sidebar.is-collapsed .sb-toggle svg { transform: rotate(180deg); }
+
   /* Tile hover */
   .tile { transition: transform .15s, box-shadow .15s; }
   .tile:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(8,80,65,.10), 0 16px 32px rgba(8,80,65,.06); }
@@ -182,20 +244,26 @@
 <div class="min-h-screen flex">
 
   <!-- ============= SIDEBAR (desktop) ============= -->
-  <aside class="sidebar w-[260px] shrink-0 bg-white border-r border-line h-screen sticky top-0 flex flex-col">
+  <aside class="sidebar shrink-0 bg-white border-r border-line h-screen sticky top-0 flex flex-col relative">
+
+    <!-- Collapse toggle (floating on right edge) -->
+    <button class="sb-toggle" id="sbToggle" aria-label="Toggle sidebar" title="Toggle sidebar">
+      <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+    </button>
+
     <!-- Logo -->
-    <div class="px-5 pt-5 pb-4 flex items-center gap-3">
-      <div class="w-9 h-9 rounded-xl bg-brand-ink text-white grid place-items-center">
+    <div class="px-4 pt-5 pb-4 flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-brand-ink text-white grid place-items-center shrink-0">
         <span class="display text-[15px] font-bold tracking-tight">tg</span>
       </div>
-      <div class="leading-tight">
+      <div class="leading-tight sb-hide">
         <div class="display text-[15px] font-bold text-brand-ink">TCG CRM</div>
         <div class="text-[11px] text-stone-500 -mt-0.5">The Clean Guys</div>
       </div>
     </div>
 
     <!-- Search -->
-    <div class="px-4 pb-3">
+    <div class="px-3 pb-3 sb-hide">
       <label class="relative block">
         <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"></i>
         <input type="text" placeholder="Search clients, invoices…"
@@ -205,53 +273,63 @@
     </div>
 
     <!-- Nav -->
-    <nav class="px-3 flex-1 overflow-y-auto">
-      <div class="text-[10px] font-bold tracking-wider text-stone-400 uppercase px-3 pt-2 pb-1.5">Workspace</div>
-      <a class="nav-item active" data-view="overview" href="#overview">
-        <i data-lucide="layout-dashboard" class="w-4 h-4 text-stone-500"></i> Overview
+    <nav class="px-2.5 flex-1 overflow-y-auto">
+      <div class="nav-section-label text-[10px] font-bold tracking-wider text-stone-400 uppercase px-3 pt-2 pb-1.5">Workspace</div>
+      <a class="nav-item active" data-view="overview" data-tip="Overview" href="#overview">
+        <i data-lucide="layout-dashboard" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Overview</span>
       </a>
-      <a class="nav-item" data-view="leads" href="#leads">
-        <i data-lucide="kanban-square" class="w-4 h-4 text-stone-500"></i> Leads
-        <span class="ml-auto pill warn !py-0.5 !px-2 !text-[10px]">3 new</span>
+      <a class="nav-item" data-view="leads" data-tip="Leads · 3 new" href="#leads">
+        <i data-lucide="kanban-square" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Leads</span>
+        <span class="sb-hide ml-auto pill warn !py-0.5 !px-2 !text-[10px]">3 new</span>
       </a>
-      <a class="nav-item" data-view="clients" href="#clients">
-        <i data-lucide="users" class="w-4 h-4 text-stone-500"></i> Clients
+      <a class="nav-item" data-view="clients" data-tip="Clients" href="#clients">
+        <i data-lucide="users" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Clients</span>
       </a>
-      <a class="nav-item" data-view="calendar" href="#calendar">
-        <i data-lucide="calendar-days" class="w-4 h-4 text-stone-500"></i> Booking Calendar
-      </a>
-
-      <div class="text-[10px] font-bold tracking-wider text-stone-400 uppercase px-3 pt-5 pb-1.5">Money</div>
-      <a class="nav-item" data-view="invoices" href="#invoices">
-        <i data-lucide="receipt" class="w-4 h-4 text-stone-500"></i> Invoices
-      </a>
-      <a class="nav-item" data-view="contracts" href="#contracts">
-        <i data-lucide="file-signature" class="w-4 h-4 text-stone-500"></i> Contracts
-      </a>
-      <a class="nav-item" data-view="forecast" href="#forecast">
-        <i data-lucide="trending-up" class="w-4 h-4 text-stone-500"></i> Forecast
+      <a class="nav-item" data-view="calendar" data-tip="Booking Calendar" href="#calendar">
+        <i data-lucide="calendar-days" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Booking Calendar</span>
       </a>
 
-      <div class="text-[10px] font-bold tracking-wider text-stone-400 uppercase px-3 pt-5 pb-1.5">Admin</div>
-      <a class="nav-item" data-view="audit" href="#audit">
-        <i data-lucide="history" class="w-4 h-4 text-stone-500"></i> Audit Log
+      <div class="nav-section-label text-[10px] font-bold tracking-wider text-stone-400 uppercase px-3 pt-5 pb-1.5">Money</div>
+      <a class="nav-item" data-view="invoices" data-tip="Invoices" href="#invoices">
+        <i data-lucide="receipt" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Invoices</span>
       </a>
-      <a class="nav-item" data-view="users" href="#users">
-        <i data-lucide="user-cog" class="w-4 h-4 text-stone-500"></i> Users
+      <a class="nav-item" data-view="contracts" data-tip="Contracts" href="#contracts">
+        <i data-lucide="file-signature" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Contracts</span>
       </a>
-      <a class="nav-item" data-view="settings" href="#settings">
-        <i data-lucide="settings" class="w-4 h-4 text-stone-500"></i> Settings
+      <a class="nav-item" data-view="forecast" data-tip="Forecast" href="#forecast">
+        <i data-lucide="trending-up" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Forecast</span>
+      </a>
+
+      <div class="nav-section-label text-[10px] font-bold tracking-wider text-stone-400 uppercase px-3 pt-5 pb-1.5">Admin</div>
+      <a class="nav-item" data-view="audit" data-tip="Audit Log" href="#audit">
+        <i data-lucide="history" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Audit Log</span>
+      </a>
+      <a class="nav-item" data-view="users" data-tip="Users" href="#users">
+        <i data-lucide="user-cog" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Users</span>
+      </a>
+      <a class="nav-item" data-view="settings" data-tip="Settings" href="#settings">
+        <i data-lucide="settings" class="w-4 h-4 text-stone-500 shrink-0"></i>
+        <span class="sb-hide">Settings</span>
       </a>
     </nav>
 
     <!-- Account block -->
     <div class="border-t border-line p-3 flex items-center gap-3">
-      <div class="avatar">KM</div>
-      <div class="leading-tight flex-1 min-w-0">
+      <div class="avatar shrink-0">KM</div>
+      <div class="leading-tight flex-1 min-w-0 sb-hide">
         <div class="text-sm font-semibold text-brand-ink truncate">Kervin Mananzan</div>
         <div class="text-[11px] text-stone-500">Owner · signed in</div>
       </div>
-      <button class="p-2 rounded-lg hover:bg-surface-sunk text-stone-500" title="Account menu">
+      <button class="p-2 rounded-lg hover:bg-surface-sunk text-stone-500 sb-hide" title="Account menu">
         <i data-lucide="more-horizontal" class="w-4 h-4"></i>
       </button>
     </div>
@@ -2772,6 +2850,25 @@
       p.classList.toggle('hidden', p.dataset.tab !== wantTab);
     });
   });
+
+  // Sidebar collapse toggle (desktop) — persists in localStorage
+  (function () {
+    const sidebar = document.querySelector('.sidebar');
+    const toggle = document.getElementById('sbToggle');
+    if (!sidebar || !toggle) return;
+
+    const STORAGE_KEY = 'tcg-crm:sidebar-collapsed';
+
+    // Restore saved state on load
+    if (localStorage.getItem(STORAGE_KEY) === '1') {
+      sidebar.classList.add('is-collapsed');
+    }
+
+    toggle.addEventListener('click', () => {
+      const isCollapsed = sidebar.classList.toggle('is-collapsed');
+      localStorage.setItem(STORAGE_KEY, isCollapsed ? '1' : '0');
+    });
+  })();
 </script>
 
 </body>
