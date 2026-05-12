@@ -547,9 +547,9 @@
     background: var(--paper);
     border-radius: 16px;
     box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.18);
-    max-width: 760px;
+    max-width: 1320px;
     width: calc(100vw - 32px);
-    max-height: min(92vh, 920px);
+    max-height: min(95vh, 1000px);
     margin: auto;
     color: var(--ink);
     overflow: hidden;
@@ -571,14 +571,16 @@
 
   .service-modal-hero {
     position: relative;
-    aspect-ratio: 21/9;
+    /* Desktop: cinematic 4:1 — saves vertical space so body content fits without scrolling.
+       Mobile media query restores 16:10 portrait below 640px. */
+    aspect-ratio: 4/1;
     background-size: cover;
     background-position: center;
     background-color: var(--brand-darker);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 32px 36px 28px;
+    padding: 32px 44px 28px;
     color: #fff;
   }
   .service-modal-hero::before {
@@ -602,15 +604,31 @@
 
   .service-modal-body {
     overflow-y: auto;
-    padding: 32px 36px 24px;
+    padding: 32px 44px 24px;
     flex: 1;
     line-height: 1.55;
   }
   .service-modal-lede {
     font-size: 18px;
     color: var(--ink-soft);
-    margin-bottom: 28px;
+    margin-bottom: 18px;
     line-height: 1.5;
+  }
+
+  /* 2-column body layout on desktop — main col = spec, side col = conversion content.
+     UX: F-pattern reading hits price + audience faster than scrolling. */
+  .service-modal-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  @media (min-width: 768px) {
+    .service-modal-grid {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 44px;
+      align-items: start;
+    }
+    .service-modal-col-side h3:first-of-type { margin-top: 0; }
   }
   .service-modal-body h3 {
     font-size: 13px;
@@ -1338,21 +1356,29 @@
     <p class="service-modal-lede" id="sm-lede"></p>
     <a class="service-modal-page-link" id="sm-page-link" href="#">See the full service page →</a>
 
-    <h3>What's included</h3>
-    <ul id="sm-included"></ul>
+    <div class="service-modal-grid">
+      <!-- Primary column: the spec (what you actually get) -->
+      <div class="service-modal-col-main">
+        <h3>What's included</h3>
+        <ul id="sm-included"></ul>
 
-    <h3>Add-ons available</h3>
-    <ul id="sm-addons"></ul>
+        <h3>Add-ons available</h3>
+        <ul id="sm-addons"></ul>
+      </div>
 
-    <h3>Starting at</h3>
-    <p class="pricing-line" id="sm-pricing"></p>
+      <!-- Side column: the conversion content (price, audience, differentiator) -->
+      <div class="service-modal-col-side">
+        <h3>Starting at</h3>
+        <p class="pricing-line" id="sm-pricing"></p>
 
-    <h3>Best for</h3>
-    <p id="sm-good-for"></p>
+        <h3>Best for</h3>
+        <p id="sm-good-for"></p>
 
-    <div class="service-modal-bonus">
-      <strong>Why this is different</strong>
-      <p id="sm-bonus"></p>
+        <div class="service-modal-bonus">
+          <strong>Why this is different</strong>
+          <p id="sm-bonus"></p>
+        </div>
+      </div>
     </div>
   </div>
   <div class="service-modal-cta">
