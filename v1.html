@@ -390,6 +390,174 @@
     .section.reviews .section-head h2 { margin-top: 8px !important; }
   }
 
+  /* === Service detail modal ===
+     UX rationale: when users click a service card, they want depth before commitment.
+     Modal keeps them on the page (no navigation, low bounce), shows full service detail,
+     ends with a contextual "Get a quote for THIS service" CTA that pre-fills the quote form.
+     Same dialog mechanics as quote modal for consistency. */
+  .service-modal {
+    border: none;
+    padding: 0;
+    background: var(--paper);
+    border-radius: 16px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.12);
+    max-width: 720px;
+    width: calc(100vw - 32px);
+    max-height: min(92vh, 920px);
+    margin: auto;
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .service-modal:not([open]) { display: none; }
+  .service-modal[open] { display: flex; flex-direction: column; animation: qmIn 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
+  .service-modal::backdrop { background: rgba(8, 30, 24, 0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .service-modal[open]::backdrop { animation: qmFade 0.25s ease-out; }
+
+  .service-modal-close {
+    position: absolute; top: 16px; right: 16px; z-index: 10;
+    background: rgba(255,255,255,0.9); border: none; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: var(--ink); transition: background .15s;
+    backdrop-filter: blur(8px);
+  }
+  .service-modal-close:hover { background: var(--paper); }
+
+  .service-modal-hero {
+    position: relative;
+    aspect-ratio: 21/9;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--brand-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px 32px 24px;
+    color: #fff;
+  }
+  .service-modal-hero::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(8,30,24,0.7) 100%);
+  }
+  .service-modal-hero > * { position: relative; z-index: 1; }
+  .service-modal-eyebrow {
+    text-transform: uppercase; letter-spacing: 0.18em;
+    font-size: 11px; font-weight: 600;
+    color: rgba(255,255,255,0.85); margin-bottom: 8px;
+    display: inline-block;
+  }
+  .service-modal-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  .service-modal-body {
+    overflow-y: auto;
+    padding: 28px 32px 20px;
+    flex: 1;
+    line-height: 1.55;
+  }
+  .service-modal-lede {
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .service-modal-body h3 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brand-dark);
+    margin: 24px 0 10px;
+  }
+  .service-modal-body h3:first-of-type { margin-top: 0; }
+  .service-modal-body ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+  }
+  .service-modal-body ul li {
+    font-size: 15px;
+    color: var(--ink);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .service-modal-body ul li::before {
+    content: "";
+    width: 16px; height: 16px;
+    flex-shrink: 0; margin-top: 4px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230F6E56' stroke-width='3'><polyline points='20 6 9 17 4 12'/></svg>");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  .service-modal-body .pricing-line {
+    font-size: 16px; color: var(--ink);
+    background: var(--brand-light);
+    padding: 14px 18px;
+    border-radius: 8px;
+    border-left: 3px solid var(--brand);
+  }
+  .service-modal-body .pricing-line strong { color: var(--brand-dark); }
+  .service-modal-bonus {
+    margin-top: 24px;
+    padding: 16px 18px;
+    background: #FFF9E6;
+    border-left: 3px solid #E5A800;
+    border-radius: 8px;
+  }
+  .service-modal-bonus strong { display: block; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #7A5A00; margin-bottom: 6px; }
+  .service-modal-bonus p { font-size: 15px; color: var(--ink); }
+
+  .service-modal-cta {
+    padding: 18px 24px;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .service-modal-cta .btn {
+    background: var(--brand);
+    color: #fff;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+    flex: 1;
+    min-width: 200px;
+  }
+  .service-modal-cta .btn:hover { background: var(--brand-dark); }
+  .service-modal-cta .phone-link {
+    color: var(--ink-soft);
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .service-modal-cta .phone-link strong { color: var(--brand-dark); }
+
+  @media (max-width: 640px) {
+    .service-modal { width: 100vw; max-width: 100vw; height: 100vh; height: 100dvh; max-height: 100vh; border-radius: 0; }
+    .service-modal-hero { aspect-ratio: 16/10; padding: 20px 20px 18px; }
+    .service-modal-title { font-size: 26px; }
+    .service-modal-body { padding: 22px 20px 16px; }
+    .service-modal-body ul { grid-template-columns: 1fr; }
+    .service-modal-cta { padding: 14px 16px; flex-direction: column; align-items: stretch; }
+    .service-modal-cta .btn { width: 100%; }
+    .service-modal-cta .phone-link { text-align: center; }
+  }
+
   /* === Quote modal === */
   .quote-modal {
     border: none;
@@ -524,6 +692,31 @@
   .quote-modal .service-tile .tile-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--ink); }
   .quote-modal .service-tile .tile-sub { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
   .quote-modal .service-tile .tile-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+
+  /* Big-radio (2-col residential/commercial picker at step 2 — only when service=general) */
+  .quote-modal .big-radio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .quote-modal .big-radio {
+    background: var(--paper); border: 1.5px solid var(--line);
+    border-radius: 10px; padding: 18px 16px; cursor: pointer;
+    text-align: left; transition: border-color .15s, background .15s;
+    display: flex; align-items: flex-start; gap: 12px; font-family: inherit;
+  }
+  .quote-modal .big-radio:hover { border-color: var(--brand); }
+  .quote-modal .big-radio.selected { border-color: var(--brand); background: var(--brand-light); }
+  .quote-modal .big-radio .br-circle {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--line); flex-shrink: 0; margin-top: 2px;
+    position: relative; transition: border-color .15s;
+  }
+  .quote-modal .big-radio.selected .br-circle { border-color: var(--brand); }
+  .quote-modal .big-radio.selected .br-circle::after {
+    content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--brand);
+  }
+  .quote-modal .big-radio .br-body { flex: 1; min-width: 0; }
+  .quote-modal .big-radio .br-title { font-weight: 700; color: var(--ink); font-size: 15px; margin-bottom: 2px; }
+  .quote-modal .big-radio .br-sub { color: var(--ink-soft); font-size: 13px; line-height: 1.4; }
+  .quote-modal .big-radio .br-icon { font-size: 18px; margin-right: 4px; }
+  @media (max-width: 640px) { .quote-modal .big-radio-grid { grid-template-columns: 1fr; } }
 
   /* Inputs */
   .quote-modal .field { margin-bottom: 16px; }
@@ -716,11 +909,11 @@
             <span class="arrow">Learn more →</span>
           </div>
         </a>
-        <a href="/move-in-move-out-cleaning" class="service-card move">
+        <a href="/commercial-cleaning" class="service-card commercial">
           <div class="photo"></div>
           <div class="body">
-            <h3>Move in / move out</h3>
-            <p>Full-unit prep before you hand over the keys — or before they hand them to you. Tracks, baseboards, appliances, the works.</p>
+            <h3>Commercial cleaning</h3>
+            <p>Recurring service for offices, retail, restaurants, and salons. We work around your hours, not the other way around.</p>
             <span class="arrow">Learn more →</span>
           </div>
         </a>
@@ -732,11 +925,11 @@
             <span class="arrow">Learn more →</span>
           </div>
         </a>
-        <a href="/commercial-cleaning" class="service-card commercial">
+        <a href="/move-in-move-out-cleaning" class="service-card move">
           <div class="photo"></div>
           <div class="body">
-            <h3>Commercial cleaning</h3>
-            <p>Recurring service for offices, retail, restaurants, and salons. We work around your hours, not the other way around.</p>
+            <h3>Move in / move out</h3>
+            <p>Full-unit prep before you hand over the keys — or before they hand them to you. Tracks, baseboards, appliances, the works.</p>
             <span class="arrow">Learn more →</span>
           </div>
         </a>
@@ -892,6 +1085,42 @@
 </footer>
 
 <!-- ============ Quote Modal ============ -->
+<!-- ============================================
+     SERVICE DETAIL MODAL — opens when service card clicked.
+     Content is populated dynamically from JS data per service key.
+============================================ -->
+<dialog id="service-modal" class="service-modal" aria-labelledby="sm-title">
+  <button class="service-modal-close" data-service-modal-close aria-label="Close">×</button>
+  <div class="service-modal-hero" id="sm-hero">
+    <span class="service-modal-eyebrow" id="sm-eyebrow">Service detail</span>
+    <h2 class="service-modal-title" id="sm-title"></h2>
+  </div>
+  <div class="service-modal-body">
+    <p class="service-modal-lede" id="sm-lede"></p>
+
+    <h3>What's included</h3>
+    <ul id="sm-included"></ul>
+
+    <h3 id="sm-addons-label">Add-ons available</h3>
+    <ul id="sm-addons"></ul>
+
+    <h3>Starting at</h3>
+    <p class="pricing-line" id="sm-pricing"></p>
+
+    <h3>Best for</h3>
+    <p id="sm-good-for"></p>
+
+    <div class="service-modal-bonus">
+      <strong>Why this is different</strong>
+      <p id="sm-bonus"></p>
+    </div>
+  </div>
+  <div class="service-modal-cta">
+    <button type="button" class="btn" id="sm-quote-btn">Get a quote for this service →</button>
+    <a href="tel:7025514878" class="phone-link">Or call <strong>702-551-4878</strong></a>
+  </div>
+</dialog>
+
 <dialog id="quote-modal" class="quote-modal" aria-labelledby="qm-title">
   <button type="button" class="modal-close" aria-label="Close form" data-modal-close>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -915,10 +1144,10 @@
       <p class="step-sub">Pick the service that fits best — you can mention extras in the next step.</p>
 
       <div class="service-grid" role="radiogroup" aria-label="Service type">
-        <button type="button" class="service-tile" data-service="residential">
+        <button type="button" class="service-tile" data-service="general">
           <span class="tile-icon">🏠</span>
-          <div class="tile-title">Residential</div>
-          <div class="tile-sub">Recurring or one-time home cleaning</div>
+          <div class="tile-title">Residential or Commercial</div>
+          <div class="tile-sub">Recurring or one-time general cleaning</div>
         </button>
         <button type="button" class="service-tile" data-service="window">
           <span class="tile-icon">🪟</span>
@@ -935,11 +1164,6 @@
           <div class="tile-title">Post construction</div>
           <div class="tile-sub">New build or renovation cleanup</div>
         </button>
-        <button type="button" class="service-tile" data-service="commercial">
-          <span class="tile-icon">🏢</span>
-          <div class="tile-title">Commercial</div>
-          <div class="tile-sub">Office, retail, restaurant, salon</div>
-        </button>
       </div>
 
       <div class="field-error" id="service-error" style="display:none; margin-top: 12px;">Please pick a service to continue.</div>
@@ -954,6 +1178,28 @@
       <div class="step-label">Step 2 of 3</div>
       <h2>Tell us about the job.</h2>
       <p class="step-sub" id="step2-sub">A few details so we can size the quote accurately.</p>
+
+      <!-- Residential vs Commercial picker (only when service=general) -->
+      <div class="field conditional" data-show-for="general">
+        <label>Is this for a home or a business? <span class="req">*</span></label>
+        <div class="big-radio-grid" role="radiogroup" aria-label="Residential or Commercial">
+          <button type="button" class="big-radio" data-subtype="residential">
+            <span class="br-circle"></span>
+            <div class="br-body">
+              <div class="br-title"><span class="br-icon">🏠</span> Residential</div>
+              <div class="br-sub">Home, apartment, condo, or townhouse</div>
+            </div>
+          </button>
+          <button type="button" class="big-radio" data-subtype="commercial">
+            <span class="br-circle"></span>
+            <div class="br-body">
+              <div class="br-title"><span class="br-icon">🏢</span> Commercial</div>
+              <div class="br-sub">Office, retail, restaurant, or salon</div>
+            </div>
+          </button>
+        </div>
+        <div class="field-error" id="subtype-error" style="display:none; margin-top: 10px;">Please choose Residential or Commercial.</div>
+      </div>
 
       <div class="field">
         <label for="property-type">Property type <span class="req">*</span></label>
@@ -1165,7 +1411,7 @@
 (function() {
   const modal = document.getElementById('quote-modal');
   if (!modal) return;
-  const formState = { service: null };
+  const formState = { service: null, subType: null };
 
   // Open triggers
   document.querySelectorAll('[data-quote-trigger]').forEach(trigger => {
@@ -1173,9 +1419,17 @@
       e.preventDefault();
       modal.showModal();
       const preset = trigger.dataset.service;
+      const presetSubtype = trigger.dataset.subtype;
       if (preset) {
         const tile = modal.querySelector(`.service-tile[data-service="${preset}"]`);
         if (tile) tile.click();
+        if (presetSubtype) {
+          // for general → set subtype too
+          setTimeout(() => {
+            const sub = modal.querySelector(`.big-radio[data-subtype="${presetSubtype}"]`);
+            if (sub) sub.click();
+          }, 0);
+        }
       }
     });
   });
@@ -1193,8 +1447,10 @@
   // Reset on close
   modal.addEventListener('close', () => {
     formState.service = null;
+    formState.subType = null;
     showStep(1);
     modal.querySelectorAll('.service-tile').forEach(t => t.classList.remove('selected'));
+    modal.querySelectorAll('.big-radio').forEach(t => t.classList.remove('selected'));
     modal.querySelectorAll('input, select, textarea').forEach(el => {
       if (el.type === 'radio' || el.type === 'checkbox') {
         el.checked = (el.name === 'contactPref' && el.value === 'Text');
@@ -1205,37 +1461,82 @@
     });
     modal.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
     document.getElementById('service-error').style.display = 'none';
+    const se = document.getElementById('subtype-error');
+    if (se) se.style.display = 'none';
     updateConditionals();
+    filterPropertyType();
   });
 
-  // Service tile selection
+  // Service tile selection (step 1)
   modal.querySelectorAll('.service-tile').forEach(tile => {
     tile.addEventListener('click', () => {
       modal.querySelectorAll('.service-tile').forEach(t => t.classList.remove('selected'));
       tile.classList.add('selected');
       formState.service = tile.dataset.service;
+      formState.subType = null;
+      modal.querySelectorAll('.big-radio').forEach(b => b.classList.remove('selected'));
       document.getElementById('service-error').style.display = 'none';
       updateConditionals();
+      filterPropertyType();
     });
   });
 
+  // Sub-type radio (step 2, only when service=general)
+  modal.querySelectorAll('.big-radio').forEach(btn => {
+    btn.addEventListener('click', () => {
+      modal.querySelectorAll('.big-radio').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      formState.subType = btn.dataset.subtype;
+      const err = document.getElementById('subtype-error');
+      if (err) err.style.display = 'none';
+      updateConditionals();
+      filterPropertyType();
+    });
+  });
+
+  function effectiveService() {
+    return formState.service === 'general' ? formState.subType : formState.service;
+  }
+
   function updateConditionals() {
+    const effective = effectiveService();
     modal.querySelectorAll('.conditional').forEach(el => {
-      el.style.display = el.dataset.showFor === formState.service ? 'block' : 'none';
+      const showFor = el.dataset.showFor;
+      if (showFor === 'general') {
+        el.style.display = formState.service === 'general' ? 'block' : 'none';
+      } else {
+        el.style.display = showFor === effective ? 'block' : 'none';
+      }
     });
     const subs = {
+      general: 'First — is this for a home or a business?',
       residential: 'A few details about your home so we can lock in the right cadence and crew.',
       window: 'A few details about your windows so we can size the quote accurately.',
       move: 'A few details about the unit so we can quote a proper move clean.',
       'post-construction': 'A few details about the project so we can phase the cleanup.',
       commercial: 'A few details about your space and schedule.'
     };
+    const subKey = (formState.service === 'general' && !formState.subType) ? 'general' : effective;
     const subEl = document.getElementById('step2-sub');
-    if (formState.service && subs[formState.service] && subEl) {
-      subEl.textContent = subs[formState.service];
-    } else if (subEl) {
-      subEl.textContent = 'A few details so we can size the quote accurately.';
+    if (subEl) {
+      subEl.textContent = (subKey && subs[subKey]) ? subs[subKey] : 'A few details so we can size the quote accurately.';
     }
+  }
+
+  // Property-type filtering (residential vs commercial — progressive disclosure)
+  function filterPropertyType() {
+    const select = modal.querySelector('#property-type');
+    if (!select) return;
+    const effective = effectiveService();
+    const residentialOpts = ['Single-family home', 'Apartment / condo', 'Townhouse', 'Other'];
+    const commercialOpts = ['Office', 'Retail / storefront', 'Restaurant', 'Salon / spa', 'New construction', 'Other'];
+    const allOpts = ['Single-family home', 'Apartment / condo', 'Townhouse', 'Office', 'Retail / storefront', 'Restaurant', 'Salon / spa', 'New construction', 'Other'];
+    let shown = allOpts;
+    if (effective === 'residential' || effective === 'move') shown = residentialOpts;
+    else if (effective === 'commercial') shown = commercialOpts;
+    const currentVal = select.value;
+    select.innerHTML = '<option value="">Select…</option>' + shown.map(o => `<option>${o}</option>`).join('');
+    if (shown.includes(currentVal)) select.value = currentVal;
   }
 
   // Radio / checkbox visual selection
@@ -1272,6 +1573,15 @@
       return;
     }
     if (currentStep === 2) {
+      // Require subtype selection when service=general
+      if (formState.service === 'general' && !formState.subType) {
+        const err = document.getElementById('subtype-error');
+        if (err) {
+          err.style.display = 'block';
+          err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
       const propertyType = document.getElementById('property-type');
       if (!propertyType.value) {
         propertyType.closest('.field').classList.add('has-error');
@@ -1318,6 +1628,182 @@
   });
 
   updateConditionals();
+
+  // Expose for service modal → quote modal handoff
+  window.openQuoteForService = function(serviceKey, subtype) {
+    modal.showModal();
+    const tile = modal.querySelector(`.service-tile[data-service="${serviceKey}"]`);
+    if (tile) tile.click();
+    if (subtype) {
+      setTimeout(() => {
+        const sub = modal.querySelector(`.big-radio[data-subtype="${subtype}"]`);
+        if (sub) sub.click();
+      }, 0);
+    }
+  };
+})();
+
+// ============================================================
+// SERVICE DETAIL MODAL — populates from data, hands off to quote
+// ============================================================
+(function() {
+  const sModal = document.getElementById('service-modal');
+  if (!sModal) return;
+
+  // Service data — single source of truth for modal content.
+  // Each service has marketing-rich content: what's included, add-ons,
+  // pricing anchors, ideal audience, and a "why this is different" hook.
+  const serviceDetails = {
+    residential: {
+      title: 'Residential cleaning',
+      image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1800&q=80',
+      lede: 'Recurring or one-time house cleans. Set the cadence — weekly, bi-weekly, or monthly — and we show up. Same team every visit so we get to know your home.',
+      included: [
+        'Kitchen: counters, stovetop, microwave, sink, exteriors',
+        'Bathrooms: tub, shower, toilet, sink, mirror, floors',
+        'Bedrooms: dusting, vacuuming, surfaces, bed-making',
+        'Living areas: dust + vacuum + hard floors',
+        'Trash + recycling taken out',
+        'Door handles + light switches sanitized',
+      ],
+      addons: ['Inside oven', 'Inside fridge', 'Interior windows', 'Laundry + linen change', 'Deep-clean kitchen', 'Deep-clean bathrooms'],
+      pricing: 'From <strong>$140</strong> for a 1-bedroom apartment · <strong>$220</strong> for a 3-bedroom home · one-time deep cleans from <strong>$280</strong>',
+      goodFor: 'Busy families, working professionals, vacation rentals (turn-overs), post-event tidy-ups, snowbirds, or anyone who wants their weekend back.',
+      bonus: 'Same team every visit means we learn your home. We can hold a key or code (optional). 100% satisfaction guaranteed — if something\'s missed, we come back free.',
+      quoteKey: 'general',
+      subtype: 'residential',
+    },
+    window: {
+      title: 'Window cleaning',
+      image: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=1800&q=80',
+      lede: 'Streak-free interior and exterior windows. One-time, quarterly, or twice a year. We do residential and commercial — single story, two-story, storefronts, the works.',
+      included: [
+        'All accessible interior windows (both sides)',
+        'Tracks + sills wiped',
+        'Screens rinsed and dried',
+        'Exterior windows up to second story',
+        'Sliding-glass doors',
+        'Mirrors (on request)',
+      ],
+      addons: ['Hard-water stain treatment', 'Solar panel cleaning', 'Skylight cleaning', 'Chandelier glass', 'Window-only recurring plan (15% off)'],
+      pricing: 'From <strong>$150</strong> for a small home (≤10 windows) · two-story homes from <strong>$280</strong> · storefronts from <strong>$85/visit</strong> on recurring',
+      goodFor: 'Homeowners, storefronts, offices, real estate listings, post-renovation reveals, or any time the natural light feels off.',
+      bonus: 'We use pure-water poles for second-story exteriors — no ladders against your house, no soap residue on your walls. Recurring window cleaning gets 15% off.',
+      quoteKey: 'window',
+    },
+    move: {
+      title: 'Move in / move out cleaning',
+      image: 'https://images.unsplash.com/photo-1581578017093-cd30fce4eeb7?w=1800&q=80',
+      lede: 'Full-unit prep before you hand over the keys — or before you take them. Deposit-ready guaranteed. We coordinate with leasing agents directly if needed.',
+      included: [
+        'Inside all cabinets and drawers',
+        'Inside oven, fridge, microwave, dishwasher',
+        'Baseboards + door frames + trim',
+        'Window sills + tracks',
+        'All floors: vacuum + mop',
+        'All bathrooms: full scrub down',
+        'Inside closets',
+        'Light fixture cleaning',
+      ],
+      addons: ['Carpet shampoo', 'Wall spot-cleaning', 'Inside trash compactor', 'Window cleaning (combined discount)'],
+      pricing: 'From <strong>$280</strong> for 1-bedroom apartments · <strong>$440</strong> for 3-bedroom homes · deposit-back guarantee included',
+      goodFor: 'Renters wanting their full deposit back, landlords prepping units for new tenants, real estate agents staging properties, homeowners moving in fresh.',
+      bonus: 'We coordinate directly with your leasing agent or property manager on request — so you don\'t have to be the middleman during a stressful move.',
+      quoteKey: 'move',
+    },
+    'post-construction': {
+      title: 'Post-construction cleanup',
+      image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1800&q=80',
+      lede: 'Drywall dust, sticker residue, paint splatters, debris. We turn a finished job into a move-in-ready space. We coordinate with your GC\'s schedule.',
+      included: [
+        'Drywall dust HEPA-vacuumed off all surfaces',
+        'Sticker + label residue removed',
+        'Paint splatters lifted (where safe)',
+        'Hardware polished + cleaned',
+        'Floors machine-buffed',
+        'Cabinets wiped inside + out',
+        'All glass cleaned',
+        'Tile + grout wiped',
+      ],
+      addons: ['Rough clean (during construction)', 'Final clean (before handover)', 'Touch-up (right before walkthrough)', 'Net-30 invoicing for established contractors'],
+      pricing: 'Quoted by walkthrough or photo — typically <strong>$0.30 – $0.60/sqft</strong> depending on scope and phase',
+      goodFor: 'General contractors, builders, developers, ADU builders, homeowners post-renovation, kitchen/bath remodel clients.',
+      bonus: 'Insurance certificates available on request. Net-30 invoicing for established contractors — keep your project cash flow moving.',
+      quoteKey: 'post-construction',
+    },
+    commercial: {
+      title: 'Commercial cleaning',
+      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1800&q=80',
+      lede: 'Recurring service for offices, retail, restaurants, and salons. We work around your hours — after-hours scheduling included free. Day-porter service available.',
+      included: [
+        'Restrooms: full scrub + restock',
+        'Breakroom / kitchen: counters, sinks, appliances',
+        'Offices + cubes: dust, vacuum, trash',
+        'Common areas + lobby',
+        'Glass: entry doors, partitions, dividers',
+        'Floors: vacuum (carpet), mop (hard surface)',
+      ],
+      addons: ['Day-porter service', 'Restroom paper + soap restocking', 'Floor stripping + waxing (quarterly)', 'Window cleaning (combined billing)'],
+      pricing: 'Small offices from <strong>$185/visit</strong> (weekly) · restaurants from <strong>$240/visit</strong> · salons from <strong>$165/visit</strong>',
+      goodFor: 'Professional offices, retail stores, restaurants, salons, medical offices (non-clinical zones), gyms (lobby + locker areas).',
+      bonus: 'After-hours scheduling free. Certificate of insurance available for any commercial job. Net-30 invoicing for established businesses.',
+      quoteKey: 'general',
+      subtype: 'commercial',
+    },
+  };
+
+  function openServiceModal(key) {
+    const data = serviceDetails[key];
+    if (!data) return;
+    // Populate
+    document.getElementById('sm-title').textContent = data.title;
+    document.getElementById('sm-lede').textContent = data.lede;
+    document.getElementById('sm-included').innerHTML = data.included.map(i => `<li>${i}</li>`).join('');
+    document.getElementById('sm-addons').innerHTML = data.addons.map(i => `<li>${i}</li>`).join('');
+    document.getElementById('sm-pricing').innerHTML = data.pricing;
+    document.getElementById('sm-good-for').textContent = data.goodFor;
+    document.getElementById('sm-bonus').textContent = data.bonus;
+    // Hero photo with gradient overlay (CSS handles overlay via ::before)
+    document.getElementById('sm-hero').style.backgroundImage = `url('${data.image}')`;
+    // CTA: open quote modal pre-filled with this service
+    const cta = document.getElementById('sm-quote-btn');
+    cta.dataset.serviceKey = data.quoteKey || key;
+    cta.dataset.serviceSubtype = data.subtype || '';
+    sModal.showModal();
+    sModal.querySelector('.service-modal-body').scrollTop = 0;
+  }
+
+  // Hijack service card clicks on the homepage
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('click', e => {
+      // Determine service key from card's class (window/move/post/commercial/residential)
+      const classes = ['residential','window','move','post','commercial'];
+      const key = classes.find(c => card.classList.contains(c));
+      if (!key) return;
+      // Map 'post' class → 'post-construction' data key
+      const dataKey = key === 'post' ? 'post-construction' : key;
+      e.preventDefault();
+      openServiceModal(dataKey);
+    });
+  });
+
+  // Close handlers
+  sModal.querySelectorAll('[data-service-modal-close]').forEach(btn => {
+    btn.addEventListener('click', () => sModal.close());
+  });
+  sModal.addEventListener('click', e => {
+    if (e.target === sModal) sModal.close();
+  });
+
+  // CTA → close service modal, open quote modal pre-filled
+  document.getElementById('sm-quote-btn').addEventListener('click', () => {
+    const key = document.getElementById('sm-quote-btn').dataset.serviceKey;
+    const subtype = document.getElementById('sm-quote-btn').dataset.serviceSubtype;
+    sModal.close();
+    setTimeout(() => {
+      if (window.openQuoteForService) window.openQuoteForService(key, subtype || null);
+    }, 100); // small delay so close animation finishes before reopen
+  });
 })();
 </script>
 
