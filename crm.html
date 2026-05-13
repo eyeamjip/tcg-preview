@@ -70,14 +70,7 @@
   }
   .nav-item.active svg { color: #1D9E75; }
 
-  /* Bottom tab (mobile) */
-  .tab-item {
-    display: flex; flex-direction: column; align-items: center; gap: 2px;
-    padding: 6px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;
-    color: #4a5b56; flex: 1;
-  }
-  .tab-item.active { color: #0F6E56; }
-  .tab-item.active .dot { background: #0F6E56; }
+  /* (Bottom-tab styles removed — tab bar retired in favor of sidebar nav on mobile) */
 
   /* KPI tile sparkline placeholder */
   .spark {
@@ -110,14 +103,10 @@
     flex: none;
   }
 
-  /* Sidebar collapse for mobile */
-  @media (max-width: 1023px) {
-    .sidebar { display: none; }
-  }
-  @media (min-width: 1024px) {
-    .bottom-tabs { display: none; }
-    .topbar-mobile-menu { display: none; }
-  }
+  /* Mobile sidebar pattern: sidebar visible on all viewports.
+     Defaults to a collapsed 80px icon-rail on mobile (set via JS on first visit).
+     Old `display: none < 1024px` rule + bottom-tab-bar element have both been retired —
+     a single nav source is cleaner UX than two parallel ones. */
 
   /* ------- SIDEBAR collapse pattern (desktop) ------- */
   .sidebar {
@@ -163,13 +152,13 @@
     box-shadow: 0 8px 20px rgba(8,80,65,.25);
   }
 
-  /* Collapse toggle button (floating on right edge of sidebar) */
+  /* Collapse toggle button (floating on right edge of sidebar, aligned with TCG logo row) */
   .sb-toggle {
     position: absolute;
     right: -14px;
-    /* Aligned with the "Workspace" section label vertically.
-       Was top: 64px which got clipped by the sticky topbar at 125% scale. */
-    top: 8rem;
+    /* Vertically centered with the TCG logo block in the sidebar header.
+       Logo block uses pt-5 (1.25rem) + w-9/10 icon; toggle sits ~center of that row. */
+    top: 1.5rem;
     width: 28px; height: 28px;
     border-radius: 999px;
     background: #fff;
@@ -183,6 +172,28 @@
   .sb-toggle:hover { color: #0F6E56; background: #F7F9F8; border-color: #0F6E56; }
   .sb-toggle svg { width: 16px; height: 16px; }
   .sidebar.is-collapsed .sb-toggle svg { transform: rotate(180deg); }
+
+  /* ===== Mobile-only sidebar enhancements ===== */
+  @media (max-width: 1023px) {
+    /* Slightly wider collapsed rail on mobile to fit larger tap-friendly icons */
+    .sidebar.is-collapsed { width: 80px; }
+
+    /* Bigger icons in collapsed mode — Apple HIG 44px tap target */
+    .sidebar.is-collapsed .nav-item {
+      padding: 0.75rem 0;
+      min-height: 44px;
+    }
+    .sidebar.is-collapsed .nav-item svg {
+      width: 22px; height: 22px;
+    }
+
+    /* Bigger toggle button on mobile (was 28x28 → 32x32) for easier thumb access */
+    .sb-toggle { width: 32px; height: 32px; right: -16px; }
+    .sb-toggle svg { width: 18px; height: 18px; }
+
+    /* Account block sized down a bit when collapsed since avatar is now the only visual element */
+    .sidebar.is-collapsed .border-t .avatar { width: 36px !important; height: 36px !important; }
+  }
 
   /* Tile hover */
   .tile { transition: transform .15s, box-shadow .15s; }
@@ -209,9 +220,14 @@
     .tap { min-height: 44px; }
   }
 
-  /* Quick-actions FAB */
+  /* Quick-actions FAB — bottom-right floating + button on mobile.
+     Position bumped up from 84px (which was clearing the now-removed bottom tab bar)
+     to 24px (free clearance from safe-area-inset-bottom). */
   .fab {
-    position: fixed; right: 18px; bottom: 84px; z-index: 40;
+    position: fixed;
+    right: 18px;
+    bottom: max(24px, env(safe-area-inset-bottom));
+    z-index: 40;
     width: 56px; height: 56px; border-radius: 999px;
     background: #0F6E56; color: #fff;
     display: inline-flex; align-items: center; justify-content: center;
@@ -250,13 +266,7 @@
 <header class="topbar-full sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-line">
   <div class="h-14 flex items-center gap-2 sm:gap-3 px-3 sm:px-4">
 
-    <!-- Mobile mini logo (mobile only — desktop logo lives in sidebar below) -->
-    <a class="flex items-center gap-2 lg:hidden shrink-0" href="#overview" aria-label="TCG CRM home">
-      <div class="w-7 h-7 rounded-lg bg-brand-ink text-white grid place-items-center">
-        <span class="display text-[12px] font-bold">tg</span>
-      </div>
-      <span class="display text-sm font-bold text-brand-ink hidden sm:inline">TCG CRM</span>
-    </a>
+    <!-- (Topbar mini-logo removed — sidebar now visible on mobile and shows the brand mark, so a topbar logo was a redundant second source of brand identity.) -->
 
     <!-- Search bar (always visible, takes the dominant slot) -->
     <div class="flex-1 flex items-center max-w-md">
@@ -296,10 +306,11 @@
       <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
     </button>
 
-    <!-- Logo (desktop sidebar — search USED to be here, now lives in topbar above) -->
-    <div class="px-4 pt-5 pb-4 flex items-center gap-3">
-      <div class="w-9 h-9 rounded-xl bg-brand-ink text-white grid place-items-center shrink-0">
-        <span class="display text-[15px] font-bold tracking-tight">tg</span>
+    <!-- Logo — TCG brand mark (was 'tg' → updated to full 'TCG' acronym; slightly larger icon).
+         This is the single source of brand identity on every viewport now. -->
+    <div class="px-3 pt-5 pb-4 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-brand-ink text-white grid place-items-center shrink-0">
+        <span class="display text-[13px] font-bold tracking-tight">TCG</span>
       </div>
       <div class="leading-tight sb-hide">
         <div class="display text-[15px] font-bold text-brand-ink">TCG CRM</div>
@@ -2752,31 +2763,8 @@
   </main>
 </div>
 
-<!-- ============= MOBILE BOTTOM TAB BAR ============= -->
-<nav class="bottom-tabs fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-line">
-  <div class="grid grid-cols-5 px-2 py-1.5 pb-[max(8px,env(safe-area-inset-bottom))]">
-    <a class="tab-item active" data-view="overview" href="#overview">
-      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-      <span>Overview</span>
-    </a>
-    <a class="tab-item" data-view="leads" href="#leads">
-      <i data-lucide="kanban-square" class="w-5 h-5"></i>
-      <span>Leads</span>
-    </a>
-    <a class="tab-item" data-view="calendar" href="#calendar">
-      <i data-lucide="calendar-days" class="w-5 h-5"></i>
-      <span>Calendar</span>
-    </a>
-    <a class="tab-item" data-view="clients" href="#clients">
-      <i data-lucide="users" class="w-5 h-5"></i>
-      <span>Clients</span>
-    </a>
-    <a class="tab-item" data-view="more" href="#more">
-      <i data-lucide="ellipsis" class="w-5 h-5"></i>
-      <span>More</span>
-    </a>
-  </div>
-</nav>
+<!-- (Mobile bottom tab bar removed — the sidebar's icon-rail handles nav on mobile now.
+     Single source of nav truth: sidebar visible on all viewports.) -->
 
 <!-- FAB (mobile quick action) -->
 <button class="fab" aria-label="Quick action">
@@ -2877,16 +2865,22 @@
     });
   });
 
-  // Sidebar collapse toggle (desktop) — persists in localStorage
+  // Sidebar collapse toggle — visible on all viewports, persists in localStorage.
+  // UX detail: on mobile (first visit, no stored preference), default to collapsed
+  // so the icon-rail leaves max room for main content. User can still expand.
   (function () {
     const sidebar = document.querySelector('.sidebar');
     const toggle = document.getElementById('sbToggle');
     if (!sidebar || !toggle) return;
 
     const STORAGE_KEY = 'tcg-crm:sidebar-collapsed';
+    const stored = localStorage.getItem(STORAGE_KEY);
+    const isMobile = window.matchMedia('(max-width: 1023px)').matches;
 
-    // Restore saved state on load
-    if (localStorage.getItem(STORAGE_KEY) === '1') {
+    // Restore: explicit stored preference always wins; otherwise default-collapse on mobile
+    if (stored === '1') {
+      sidebar.classList.add('is-collapsed');
+    } else if (stored === null && isMobile) {
       sidebar.classList.add('is-collapsed');
     }
 
