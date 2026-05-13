@@ -23,6 +23,11 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
+  /* Prevent any accidental horizontal overflow from causing the whole page
+     to scroll sideways on mobile. `clip` is preferred over `hidden` because
+     it preserves sticky positioning of the header. Falls back to `hidden`
+     in browsers that don't support `clip`. */
+  html, body { overflow-x: hidden; overflow-x: clip; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--paper);
