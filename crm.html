@@ -188,7 +188,14 @@
     }
 
     /* Bigger toggle button on mobile (was 28x28 → 32x32) for easier thumb access */
-    .sb-toggle { width: 32px; height: 32px; right: -16px; }
+    .sb-toggle {
+      width: 32px;
+      height: 32px;
+      right: -16px;
+      /* Override desktop's logo-row position — on mobile, sit next to the Overview row instead.
+         Aligns with Overview's vertical center in both collapsed and expanded states (~114px). */
+      top: 7rem;
+    }
     .sb-toggle svg { width: 18px; height: 18px; }
 
     /* Account block sized down a bit when collapsed since avatar is now the only visual element */
