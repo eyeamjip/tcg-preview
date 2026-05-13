@@ -140,14 +140,13 @@
     border-radius: 16px;
     overflow: hidden;
     background-color: var(--brand-dark);
-    /* Photo: yellow-glove squeegee on residential window, palm tree backdrop */
-    /* Source: Pexels (free commercial license), photographer "Blissful Place Cleaning company in Perth" */
-    /* TODO: swap with real client photo when available (D4) */
+    /* Photo: TCG crew member mid-squeegee, water droplets, residential window.
+       Local file in assets/photos/ — replaced stock photo with brand-shot generated photo. */
     background-image:
       linear-gradient(180deg, rgba(5,40,33,0) 0%, rgba(5,40,33,0.25) 100%),
-      url('https://images.pexels.com/photos/31435403/pexels-photo-31435403.jpeg?auto=compress&cs=tinysrgb&w=1100');
+      url('assets/photos/hero-v2.webp');
     background-size: cover;
-    background-position: 55% center;
+    background-position: center;
     box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.2);
   }
   .hero-photo::after {
@@ -330,11 +329,11 @@
     max-width: 460px;
   }
   .service-card .arrow { color: var(--accent); font-weight: 700; font-size: 14px; }
-  .service-card.window { background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=1100&q=80'); }
-  .service-card.move { background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1581578017093-cd30fce4eeb7?w=1100&q=80'); }
-  .service-card.post { background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1100&q=80'); }
-  .service-card.commercial { background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1100&q=80'); }
-  .service-card.residential { background-image: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1800&q=80'); }
+  .service-card.window { background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('assets/photos/window.webp'); }
+  .service-card.move { background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('assets/photos/move.webp'); }
+  .service-card.post { background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('assets/photos/post-construction.webp'); }
+  .service-card.commercial { background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('assets/photos/commercial.webp'); }
+  .service-card.residential { background-image: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.55)), url('assets/photos/residential.webp'); }
 
   /* Service area band */
   .area {
@@ -1909,7 +1908,7 @@
     residential: {
       title: 'Residential cleaning',
       pageUrl: '/residential-cleaning',
-      image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1800&q=80',
+      image: 'assets/photos/residential.webp',
       lede: 'Recurring or one-time house cleans. Set the cadence — weekly, bi-weekly, or monthly — and we show up. Same team every visit so we get to know your home.',
       included: [
         'Kitchen: counters, stovetop, microwave, sink, exteriors',
@@ -1929,7 +1928,7 @@
     window: {
       title: 'Window cleaning',
       pageUrl: '/window-cleaning',
-      image: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=1800&q=80',
+      image: 'assets/photos/window.webp',
       lede: 'Streak-free interior and exterior windows. One-time, quarterly, or twice a year. We do residential and commercial — single story, two-story, storefronts, the works.',
       included: [
         'All accessible interior windows (both sides)',
@@ -1948,7 +1947,7 @@
     move: {
       title: 'Move in / move out cleaning',
       pageUrl: '/move-in-move-out-cleaning',
-      image: 'https://images.unsplash.com/photo-1581578017093-cd30fce4eeb7?w=1800&q=80',
+      image: 'assets/photos/move.webp',
       lede: 'Full-unit prep before you hand over the keys — or before you take them. Deposit-ready guaranteed. We coordinate with leasing agents directly if needed.',
       included: [
         'Inside all cabinets and drawers',
@@ -1969,7 +1968,7 @@
     'post-construction': {
       title: 'Post-construction cleanup',
       pageUrl: '/post-construction-cleaning',
-      image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1800&q=80',
+      image: 'assets/photos/post-construction.webp',
       lede: 'Drywall dust, sticker residue, paint splatters, debris. We turn a finished job into a move-in-ready space. We coordinate with your GC\'s schedule.',
       included: [
         'Drywall dust HEPA-vacuumed off all surfaces',
@@ -1990,7 +1989,7 @@
     commercial: {
       title: 'Commercial cleaning',
       pageUrl: '/commercial-cleaning',
-      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1800&q=80',
+      image: 'assets/photos/commercial.webp',
       lede: 'Recurring service for offices, retail, restaurants, and salons. We work around your hours — after-hours scheduling included free. Day-porter service available.',
       included: [
         'Restrooms: full scrub + restock',
