@@ -303,7 +303,10 @@
   .services-head h2 {
     font-size: clamp(40px, 5vw, 64px);
     font-weight: 800;
-    max-width: 700px;
+    max-width: 920px;
+    /* Keep headlines like "Five services. Done right." on one line on desktop.
+       Mobile media query below restores normal wrapping. */
+    white-space: nowrap;
   }
   .services-head .lede {
     font-size: 17px;
@@ -575,6 +578,9 @@
     .reviews { padding: 32px 0 72px; }
     .reviews-head { margin-bottom: 28px; }
     .reviews-head h2 { margin: 8px 0 12px; }
+
+    /* Allow services heading to wrap naturally on mobile (won't fit on one line at any font size below ~900px) */
+    .services-head h2 { white-space: normal; max-width: 100%; }
   }
 
   /* === Service detail modal ===

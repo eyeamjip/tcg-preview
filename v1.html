@@ -147,7 +147,10 @@
   .section-head h2 {
     font-size: clamp(36px, 4.5vw, 56px);
     font-weight: 700;
-    max-width: 720px;
+    max-width: 820px;
+    /* Keep headlines like "Five services. Done right." on one line on desktop.
+       Mobile media query below restores normal wrapping for narrow viewports. */
+    white-space: nowrap;
   }
   .section-head .lede {
     color: var(--ink-soft);
@@ -428,6 +431,9 @@
     .service-grid, .review-grid { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
     .container { padding: 0 20px; }
+
+    /* Allow section headings to wrap naturally on mobile (text would overflow at min font size otherwise) */
+    .section-head h2 { white-space: normal; max-width: 100%; }
 
     /* Tighten the reviews section on mobile — was floating in too much empty space */
     .section.services { padding-bottom: 28px; }
