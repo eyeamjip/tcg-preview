@@ -191,11 +191,12 @@
     .sb-toggle {
       width: 32px;
       height: 32px;
-      right: -16px;
+      /* Less overhang on mobile (was -16px) — mobile view padding is px-4 (16px)
+         which exactly matched the old overhang and made the chevron kiss the H1 "G".
+         -8px keeps the floating-at-seam aesthetic but gives 8px breathing room. */
+      right: -8px;
       /* Override desktop's logo-row position — on mobile, sit next to the main H1
-         "Good afternoon, Kervin." headline. Calc: subnav (3.5rem topbar + 2.75rem subnav)
-         + view pt-6 = ~7.75rem viewport y for H1 top; sidebar sticks at 3.5rem viewport,
-         so chevron top within sidebar = ~4.25rem to land at H1 height. */
+         "Good afternoon, Kervin." headline. */
       top: 4rem;
     }
     .sb-toggle svg { width: 18px; height: 18px; }
