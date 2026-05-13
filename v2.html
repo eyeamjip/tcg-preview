@@ -238,16 +238,24 @@
   }
   .why-team-caption {
     margin-top: 20px;
-    font-size: 14px;
-    color: var(--ink-soft);
-    letter-spacing: 0.01em;
+    text-align: center;
+  }
+  /* Eyebrow above the names — small uppercase label, brand teal, matches
+     the existing .eyebrow pattern used in section headers throughout. */
+  .why-team-eyebrow {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.20em;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--brand);
+    margin-bottom: 8px;
   }
   .why-team-caption strong {
     display: block;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
     color: var(--ink);
-    margin-bottom: 4px;
     letter-spacing: -0.01em;
   }
   @media (max-width: 640px) {
@@ -1143,8 +1151,8 @@
     <div class="why-team-photo">
       <img src="assets/photos/team.webp" alt="Kervin and Jason, owners of The Clean Guys" loading="lazy" />
       <div class="why-team-caption">
+        <span class="why-team-eyebrow">Meet The Owners</span>
         <strong>Kervin &amp; Jason</strong>
-        Owners — you'll meet them on the first job
       </div>
     </div>
 
